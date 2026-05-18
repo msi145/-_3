@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="WpfApp1.Views.TechMapsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="#F5F5F5">
+
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Background="White" CornerRadius="10" Padding="20" Margin="0,0,0,15">
+            <StackPanel>
+                <TextBlock Text="Технологические карты" FontSize="22" FontWeight="Bold" Foreground="#2C3E50"/>
+                <TextBlock Text="Управление технологическими картами производства" FontSize="13" Foreground="#757575"/>
+            </StackPanel>
+        </Border>
+
+        <DataGrid x:Name="dgTechMaps" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,0,0,15">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="60"/>
+                <DataGridTextColumn Header="Название" Binding="{Binding Name}" Width="250"/>
+                <DataGridTextColumn Header="Версия" Binding="{Binding Version}" Width="80"/>
+                <DataGridTextColumn Header="Статус" Binding="{Binding Status}" Width="120"/>
+                <DataGridTemplateColumn Header="Действия" Width="140">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="Просмотр" Width="70" Click="ViewTechMap_Click" Tag="{Binding}"/>
+                                <Button Content="Ред." Width="50" Click="EditTechMap_Click" Tag="{Binding}" Margin="5,0,0,0"/>
+                                <Button Content="Удалить" Width="60" Click="DeleteTechMap_Click" Tag="{Binding}" Margin="5,0,0,0"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Border Grid.Row="2" Background="White" CornerRadius="10" Padding="15">
+            <Button Content="Создать техкарту" Width="150" Height="35" Click="CreateTechMap_Click" Background="#4CAF50" Foreground="White" HorizontalAlignment="Right"/>
+        </Border>
+    </Grid>
+</UserControl>

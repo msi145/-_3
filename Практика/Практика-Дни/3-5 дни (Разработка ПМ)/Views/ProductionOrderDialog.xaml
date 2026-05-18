@@ -1,0 +1,186 @@
+﻿<Window x:Class="WpfApp1.Views.ProductionOrderDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Создание производственного заказа" Height="580" Width="580"
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
+        WindowStyle="None" AllowsTransparency="True"
+        Background="Transparent">
+
+    <Window.Resources>
+        <!-- Цвета -->
+        <SolidColorBrush x:Key="PrimaryBrush" Color="#2196F3"/>
+        <SolidColorBrush x:Key="PrimaryDarkBrush" Color="#1976D2"/>
+        <SolidColorBrush x:Key="SuccessBrush" Color="#4CAF50"/>
+        <SolidColorBrush x:Key="SuccessDarkBrush" Color="#388E3C"/>
+        <SolidColorBrush x:Key="WarningBrush" Color="#FF9800"/>
+        <SolidColorBrush x:Key="BorderBrush" Color="#E0E0E0"/>
+        <SolidColorBrush x:Key="TextSecondaryBrush" Color="#757575"/>
+
+        <!-- Тени -->
+        <DropShadowEffect x:Key="WindowShadow" BlurRadius="25" Opacity="0.3" ShadowDepth="0"/>
+        <DropShadowEffect x:Key="ButtonShadow" BlurRadius="6" Opacity="0.15" ShadowDepth="1"/>
+
+        <!-- Стили -->
+        <Style TargetType="TextBox">
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="Margin" Value="0,5,0,18"/>
+            <Setter Property="Padding" Value="14,10"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="Margin" Value="0,5,0,18"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="DatePicker">
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="Margin" Value="0,5,0,18"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="LabelStyle">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#424242"/>
+            <Setter Property="Margin" Value="0,5,0,5"/>
+        </Style>
+    </Window.Resources>
+
+    <Border Background="White" CornerRadius="12" Effect="{StaticResource WindowShadow}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Заголовок -->
+            <Border Grid.Row="0" Background="{StaticResource PrimaryBrush}" CornerRadius="12,12,0,0" Height="65">
+                <Grid>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="25,0">
+                        <TextBlock Text="📋" FontSize="28" Margin="0,0,12,0"/>
+                        <StackPanel>
+                            <TextBlock Text="Создание производственного заказа" 
+                                       FontSize="18" FontWeight="SemiBold" Foreground="White"/>
+                            <TextBlock Text="Заполните информацию о новом заказе" 
+                                       FontSize="12" Foreground="White" Opacity="0.8" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- Кнопка закрытия -->
+                    <Button x:Name="btnClose" Click="Cancel_Click" 
+                            Width="34" Height="34" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,20,0"
+                            Cursor="Hand" Background="Transparent" BorderThickness="0">
+                        <TextBlock Text="✕" FontSize="20" Foreground="White" Opacity="0.7"/>
+                    </Button>
+                </Grid>
+            </Border>
+
+            <!-- Иконка -->
+            <Border Grid.Row="1" Width="70" Height="70" CornerRadius="35" 
+                    Background="#E3F2FD" Margin="0,-35,0,0" HorizontalAlignment="Center"
+                    Effect="{StaticResource ButtonShadow}">
+                <TextBlock Text="📑" FontSize="36" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Border>
+
+            <!-- Форма -->
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="30,45,30,20">
+                <StackPanel>
+                    <!-- Выбор продукта -->
+                    <TextBlock Text="Выберите продукт" Style="{StaticResource LabelStyle}"/>
+                    <ComboBox x:Name="cmbProduct" DisplayMemberPath="Name" SelectedValuePath="Id"/>
+
+                    <!-- Плановое количество -->
+                    <TextBlock Text="Плановое количество" Style="{StaticResource LabelStyle}"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="txtPlannedQty" Grid.Column="0"/>
+                        <ComboBox x:Name="cmbUnit" Grid.Column="1" Width="100" Margin="12,0,0,0" SelectedIndex="0">
+                            <ComboBoxItem Content="кг (килограммы)"/>
+                            <ComboBoxItem Content="л (литры)"/>
+                            <ComboBoxItem Content="шт (штуки)"/>
+                            <ComboBoxItem Content="т (тонны)"/>
+                        </ComboBox>
+                    </Grid>
+
+                    <!-- Плановая дата -->
+                    <TextBlock Text="Плановая дата производства" Style="{StaticResource LabelStyle}"/>
+                    <DatePicker x:Name="dpPlannedDate" SelectedDate="{Binding PlannedDate, Mode=TwoWay}"/>
+
+                    <!-- Приоритет -->
+                    <TextBlock Text="Приоритет заказа" Style="{StaticResource LabelStyle}"/>
+                    <ComboBox x:Name="cmbPriority" SelectedIndex="1">
+                        <ComboBoxItem Content="🔵 1 - Низкий приоритет" Foreground="#4CAF50"/>
+                        <ComboBoxItem Content="🟡 2 - Средний приоритет" Foreground="#FF9800"/>
+                        <ComboBoxItem Content="🔴 3 - Высокий приоритет" Foreground="#F44336"/>
+                    </ComboBox>
+
+                    <!-- Дополнительная информация -->
+                    <Border Background="#F8F9FA" CornerRadius="8" Padding="15" Margin="0,15,0,0">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                <TextBlock Text="ℹ️" FontSize="16" Margin="0,0,10,0"/>
+                                <TextBlock Text="Информация" FontWeight="SemiBold" Foreground="#424242"/>
+                            </StackPanel>
+                            <TextBlock Text="• Заказ будет создан в статусе 'Плановый'" 
+                                       FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="26,0,0,5"/>
+                            <TextBlock Text="• Номер заказа будет сгенерирован автоматически" 
+                                       FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="26,0,0,5"/>
+                            <TextBlock Text="• После создания заказа можно будет сформировать партии" 
+                                       FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="26,0,0,0"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- Кнопки -->
+            <Border Grid.Row="2" Background="#F8F9FA" CornerRadius="0,0,12,12" Padding="20,15" 
+                    BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button x:Name="btnCancel" Content="Отмена" Click="Cancel_Click" 
+                            Width="100" Height="38" Margin="0,0,10,0" Cursor="Hand"
+                            Background="#F5F5F5" Foreground="#616161" FontSize="13" FontWeight="SemiBold"
+                            BorderThickness="0">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
+                    <Button x:Name="btnCreate" Content="Создать заказ" Click="Create_Click" 
+                            Width="130" Height="38" Cursor="Hand" Effect="{StaticResource ButtonShadow}"
+                            Background="{StaticResource SuccessBrush}" Foreground="White" 
+                            FontSize="13" FontWeight="SemiBold" BorderThickness="0">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <TextBlock Text="✓" FontSize="16" Margin="0,0,8,0"/>
+                                        <ContentPresenter/>
+                                    </StackPanel>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

@@ -1,0 +1,164 @@
+﻿<Window x:Class="WpfApp1.Views.ProductEditDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Редактирование продукции" Height="500" Width="500"
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
+        WindowStyle="None" AllowsTransparency="True"
+        Background="Transparent">
+
+    <Window.Resources>
+        <!-- Цвета -->
+        <SolidColorBrush x:Key="PrimaryBrush" Color="#2196F3"/>
+        <SolidColorBrush x:Key="PrimaryDarkBrush" Color="#1976D2"/>
+        <SolidColorBrush x:Key="SuccessBrush" Color="#4CAF50"/>
+        <SolidColorBrush x:Key="SuccessDarkBrush" Color="#388E3C"/>
+        <SolidColorBrush x:Key="GrayBrush" Color="#9E9E9E"/>
+        <SolidColorBrush x:Key="BorderBrush" Color="#E0E0E0"/>
+
+        <!-- Тени -->
+        <DropShadowEffect x:Key="WindowShadow" BlurRadius="25" Opacity="0.3" ShadowDepth="0"/>
+        <DropShadowEffect x:Key="ButtonShadow" BlurRadius="6" Opacity="0.15" ShadowDepth="1"/>
+
+        <!-- Стили -->
+        <Style TargetType="TextBox">
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="Margin" Value="0,5,0,18"/>
+            <Setter Property="Padding" Value="14,10"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="Margin" Value="0,5,0,18"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="LabelStyle">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#424242"/>
+            <Setter Property="Margin" Value="0,5,0,5"/>
+        </Style>
+    </Window.Resources>
+
+    <Border Background="White" CornerRadius="12" Effect="{StaticResource WindowShadow}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Заголовок -->
+            <Border Grid.Row="0" Background="{StaticResource PrimaryBrush}" CornerRadius="12,12,0,0" Height="65">
+                <Grid>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="25,0">
+                        <TextBlock Text="✏️" FontSize="28" Margin="0,0,12,0"/>
+                        <StackPanel>
+                            <TextBlock Text="Редактирование продукции" 
+                                       FontSize="18" FontWeight="SemiBold" Foreground="White"/>
+                            <TextBlock Text="Изменение информации о продукции" 
+                                       FontSize="12" Foreground="White" Opacity="0.8" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- Кнопка закрытия -->
+                    <Button x:Name="btnClose" Click="Cancel_Click" 
+                            Width="34" Height="34" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,20,0"
+                            Cursor="Hand" Background="Transparent" BorderThickness="0">
+                        <TextBlock Text="✕" FontSize="20" Foreground="White" Opacity="0.7"/>
+                    </Button>
+                </Grid>
+            </Border>
+
+            <!-- Иконка -->
+            <Border Grid.Row="1" Width="70" Height="70" CornerRadius="35" 
+                    Background="#E3F2FD" Margin="0,-35,0,0" HorizontalAlignment="Center"
+                    Effect="{StaticResource ButtonShadow}">
+                <TextBlock Text="📦" FontSize="36" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Border>
+
+            <!-- Форма -->
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="30,45,30,20">
+                <StackPanel>
+                    <!-- Наименование -->
+                    <TextBlock Text="Наименование продукции" Style="{StaticResource LabelStyle}"/>
+                    <TextBox x:Name="txtName" />
+
+                    <!-- Тип продукции -->
+                    <TextBlock Text="Тип продукции" Style="{StaticResource LabelStyle}"/>
+                    <ComboBox x:Name="cmbProductType">
+                        <ComboBoxItem Content="🌾 Гербицид"/>
+                        <ComboBoxItem Content="🐛 Инсектицид"/>
+                        <ComboBoxItem Content="🍄 Фунгицид"/>
+                        <ComboBoxItem Content="🌱 Регулятор роста"/>
+                        <ComboBoxItem Content="🧪 Вспомогательное вещество"/>
+                    </ComboBox>
+
+                    <!-- Форма выпуска -->
+                    <TextBlock Text="Форма выпуска" Style="{StaticResource LabelStyle}"/>
+                    <ComboBox x:Name="cmbReleaseForm">
+                        <ComboBoxItem Content="💧 Водный раствор (ВР)"/>
+                        <ComboBoxItem Content="🧴 Концентрат эмульсии (КЭ)"/>
+                        <ComboBoxItem Content="⚪ Водно-диспергируемые гранулы (ВДГ)"/>
+                        <ComboBoxItem Content="🧪 Суспензионный концентрат (СК)"/>
+                        <ComboBoxItem Content="🧴 Масляная дисперсия (МД)"/>
+                        <ComboBoxItem Content="⚪ Смачиваемый порошок (СП)"/>
+                    </ComboBox>
+
+                    <!-- Статус -->
+                    <TextBlock Text="Статус продукции" Style="{StaticResource LabelStyle}"/>
+                    <ComboBox x:Name="cmbStatus" SelectedIndex="0">
+                        <ComboBoxItem Content="🟢 Активен" Foreground="#4CAF50"/>
+                        <ComboBoxItem Content="🟡 На согласовании" Foreground="#FF9800"/>
+                        <ComboBoxItem Content="🔴 Архивный" Foreground="#F44336"/>
+                    </ComboBox>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- Кнопки -->
+            <Border Grid.Row="2" Background="#F8F9FA" CornerRadius="0,0,12,12" Padding="20,15" 
+                    BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button x:Name="btnCancel" Content="Отмена" Click="Cancel_Click" 
+                            Width="100" Height="38" Margin="0,0,10,0" Cursor="Hand"
+                            Background="#F5F5F5" Foreground="#616161" FontSize="13" FontWeight="SemiBold"
+                            BorderThickness="0">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
+                    <Button x:Name="btnSave" Content="Сохранить" Click="Save_Click" 
+                            Width="110" Height="38" Cursor="Hand" Effect="{StaticResource ButtonShadow}"
+                            Background="{StaticResource SuccessBrush}" Foreground="White" 
+                            FontSize="13" FontWeight="SemiBold" BorderThickness="0">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <TextBlock Text="✓" FontSize="16" Margin="0,0,8,0"/>
+                                        <ContentPresenter/>
+                                    </StackPanel>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>
